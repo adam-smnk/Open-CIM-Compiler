@@ -13,6 +13,12 @@ set(CMAKE_BUILD_TYPE "")
 
 project("GemmInMemory")
 
+include_directories(${CMAKE_SOURCE_DIR}/include)
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+
 #################################################
 # LLVM Project Settings
 #################################################
@@ -28,7 +34,7 @@ set(LLVM_CCACHE_BUILD "ON")
 
 # MLIR links some whole-archive libraries by name and they
 # must be on the path. This may not be necessary in future versions of MLIR.
-link_directories(${CMAKE_BINARY_DIR}/llvm-project/llvm/lib)
+# link_directories(${CMAKE_BINARY_DIR}/llvm-project/llvm/lib)
 
 #################################################
 # MLIR Settings
@@ -50,4 +56,5 @@ include(${CMAKE_SOURCE_DIR}/utils/cmake/file_generation.cmake)
 #################################################
 # Subdirectories
 #################################################
+add_subdirectory(lib)
 add_subdirectory(tests)

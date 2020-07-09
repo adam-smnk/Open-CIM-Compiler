@@ -1,10 +1,10 @@
+#################################################
+# Transform TC to MLIR
+#################################################
 set(TC_SOURCES
   tc/mm.tc
 )
 
-#################################################
-# Transform TC to MLIR
-#################################################
 set(MLIR_GEN_DIR ${CMAKE_CURRENT_BINARY_DIR}/mlir_gen)
 set(MLIR_GEN_EXTENSION ".mlir")
 set(MLIR_FILES)
@@ -54,10 +54,23 @@ compile_mlir(
   "${LLC_FLAGS}"
 )
 
-add_custom_target(mm ALL
+# Generate lowered MLIR for debugging
+add_custom_target(mm_mlir_debug ALL
   DEPENDS ${CIM_FILES}
-  DEPENDS ${OBJ_FILES}
 )
 
-# Add .obj into executable
-# add_executable(myProgram ${OBJS} <other-sources>)
+#################################################
+# Compile test application
+#################################################
+set(MM_SOURCES
+  mm.cpp
+)
+
+add_executable(test-cim-mm
+  ${MM_SOURCES}
+  ${OBJ_FILES}
+)
+
+target_link_libraries(test-cim-mm
+  mlirInterface
+)

@@ -1,10 +1,10 @@
+#################################################
+# Transform TC to MLIR
+#################################################
 set(TC_SOURCES
   tc/vm.tc
 )
 
-#################################################
-# Transform TC to MLIR
-#################################################
 set(MLIR_GEN_DIR ${CMAKE_CURRENT_BINARY_DIR}/mlir_gen)
 set(MLIR_GEN_EXTENSION ".mlir")
 set(MLIR_FILES)
@@ -54,10 +54,22 @@ compile_mlir(
   "${LLC_FLAGS}"
 )
 
-add_custom_target(vm ALL
+add_custom_target(vm_mlir_debug ALL
   DEPENDS ${CIM_FILES}
-  DEPENDS ${OBJ_FILES}
 )
 
-# Add .obj into executable
-# add_executable(myProgram ${OBJS} <other-sources>)
+#################################################
+# Compile test application
+#################################################
+set(VM_SOURCES
+  vm.cpp
+)
+
+add_executable(test-cim-vm
+  ${VM_SOURCES}
+  ${OBJ_FILES}
+)
+
+target_link_libraries(test-cim-vm
+  mlirInterface
+)

@@ -3,11 +3,11 @@ set(SOURCES
 )
 
 # Hello world executable to test compiler
-add_executable(hello_world
+add_executable(hello-world
   ${SOURCES}
 )
 
-set_target_properties(hello_world
+set_target_properties(hello-world
   PROPERTIES
   ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
   LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
