@@ -1,1 +1,3 @@
-# gemm-in-memory
+# GEMM-in-memory
+
+Compilation tests
