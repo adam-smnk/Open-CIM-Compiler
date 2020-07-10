@@ -48,6 +48,16 @@ MemRef<T, rank>::~MemRef() {
   delete memRefDesc.allocated;
 }
 
+template <typename T, size_t rank>
+T *MemRef<T, rank>::releaseMemRef() {
+  T *buffer = memRefDesc.allocated;
+
+  memRefDesc.allocated = nullptr;
+  memRefDesc.aligned = nullptr;
+
+  return buffer;
+}
+
 } // namespace memref
 
 #endif /* _MLIR_INTERFACE__MEMREF__MEMREF_TPP_ */

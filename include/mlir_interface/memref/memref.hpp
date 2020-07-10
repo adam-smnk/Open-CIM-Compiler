@@ -21,7 +21,7 @@ struct MemRefDescriptor {
 template <typename T, size_t rank>
 class MemRef {
 public:
-  // Performs shallow copy
+  // Performs shallow copy, takes ownership of buffer
   MemRef(MemRefDescriptor<T, rank> &memRefDesc_);
 
   // Automatically allocates memory
@@ -37,6 +37,8 @@ public:
   virtual ~MemRef();
 
   MemRef() = delete;
+
+  T *releaseMemRef();
 
   MemRefDescriptor<T, rank> memRefDesc;
 };
