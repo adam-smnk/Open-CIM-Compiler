@@ -1,10 +1,9 @@
-#ifndef _MLIR_INTERFACE__MEMREF__MEMREF_H_
-#define _MLIR_INTERFACE__MEMREF__MEMREF_H_
+#ifndef _MLIR_INTERFACE__MEMREF__MEMREF_HPP_
+#define _MLIR_INTERFACE__MEMREF__MEMREF_HPP_
 
 #include <array>
 #include <cstddef>
 #include <cstdint>
-#include <memory>
 
 namespace memref {
 
@@ -21,24 +20,16 @@ struct MemRefDescriptor {
 template <typename T, size_t rank>
 class MemRef {
 public:
-  // Performs shallow copy, takes ownership of buffer
   MemRef(MemRefDescriptor<T, rank> &memRefDesc_);
 
-  // Automatically allocates memory
-  MemRef(std::array<int32_t, rank> sizes);
+  MemRef(T *buffer, std::array<int64_t, rank> sizes);
 
-  // Takes over given buffer
-  MemRef(std::unique_ptr<T> buffer, std::array<int32_t, rank> sizes);
+  MemRef(T *buffer, std::array<int64_t, rank> sizes, int64_t offset,
+         std::array<int64_t, rank> strides);
 
-  // Takes over given buffer
-  MemRef(std::unique_ptr<T> buffer, std::array<int32_t, rank> sizes,
-         int32_t offset, std::array<int32_t, rank> strides);
-
-  virtual ~MemRef();
+  virtual ~MemRef() = default;
 
   MemRef() = delete;
-
-  T *releaseMemRef();
 
   MemRefDescriptor<T, rank> memRefDesc;
 };
@@ -47,4 +38,4 @@ public:
 
 #include "memref.tpp"
 
-#endif /* _MLIR_INTERFACE__MEMREF__MEMREF_H_ */
+#endif /* _MLIR_INTERFACE__MEMREF__MEMREF_HPP_ */

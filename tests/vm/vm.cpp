@@ -18,13 +18,17 @@ int main() {
   const int32_t N = 16;
   const int32_t K = 8;
 
-  std::array<int32_t, vecRank> aDim{K};
-  std::array<int32_t, matRank> bDim{K, N};
-  std::array<int32_t, vecRank> cDim{N};
+  int16_t matA[K] = {0};
+  int16_t matB[K][N] = {0};
+  int16_t matC[N] = {0};
 
-  memref::MemRef<int16_t, vecRank> A(aDim);
-  memref::MemRef<int16_t, matRank> B(bDim);
-  memref::MemRef<int16_t, vecRank> C(cDim);
+  std::array<int64_t, vecRank> aDim{K};
+  std::array<int64_t, matRank> bDim{K, N};
+  std::array<int64_t, vecRank> cDim{N};
+
+  memref::MemRef<int16_t, vecRank> A((int16_t *)matA, aDim);
+  memref::MemRef<int16_t, matRank> B((int16_t *)matB, bDim);
+  memref::MemRef<int16_t, vecRank> C((int16_t *)matC, cDim);
 
   _mlir_ciface_vm(&A.memRefDesc, &B.memRefDesc, &C.memRefDesc);
 }

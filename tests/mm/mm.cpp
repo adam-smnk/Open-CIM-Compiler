@@ -2,6 +2,7 @@
 
 #include <array>
 #include <cstdint>
+#include <iostream>
 
 // Functions generated from TC
 extern "C" {
@@ -14,17 +15,31 @@ int main() {
   // Matrix-matrix multiplication
   // C[M][N] =  A[M][K] * B[K][N]
   const size_t rank = 2;
-  const int32_t M = 16;
-  const int32_t N = 16;
-  const int32_t K = 8;
+  const int32_t M = 3;
+  const int32_t N = 3;
+  const int32_t K = 3;
 
-  std::array<int32_t, rank> aDim{M, K};
-  std::array<int32_t, rank> bDim{K, N};
-  std::array<int32_t, rank> cDim{M, N};
+  int32_t matA[M][K] = {
+      {1, 0, 0},
+      {0, 1, 0},
+      {0, 0, 1},
+  };
 
-  memref::MemRef<int32_t, rank> A(aDim);
-  memref::MemRef<int32_t, rank> B(bDim);
-  memref::MemRef<int32_t, rank> C(cDim);
+  int32_t matB[K][N] = {
+      {1, 2, 3},
+      {4, 5, 6},
+      {7, 8, 9},
+  };
+
+  int32_t matC[M][N] = {0};
+
+  std::array<int64_t, rank> aDim = {M, K};
+  std::array<int64_t, rank> bDim = {K, N};
+  std::array<int64_t, rank> cDim = {M, N};
+
+  memref::MemRef<int32_t, rank> A((int32_t *)matA, aDim);
+  memref::MemRef<int32_t, rank> B((int32_t *)matB, bDim);
+  memref::MemRef<int32_t, rank> C((int32_t *)matC, cDim);
 
   _mlir_ciface_mm(&A.memRefDesc, &B.memRefDesc, &C.memRefDesc);
 }
