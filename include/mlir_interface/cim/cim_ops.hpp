@@ -1,5 +1,5 @@
-#ifndef _MLIR_INTERFACE__CIM__CIM_OPS_H_
-#define _MLIR_INTERFACE__CIM__CIM_OPS_H_
+#ifndef _MLIR_INTERFACE__CIM__CIM_OPS_HPP_
+#define _MLIR_INTERFACE__CIM__CIM_OPS_HPP_
 
 #include "cim_sim_mock/cim.h"
 #include "mlir_interface/memref/memref.hpp"
@@ -50,4 +50,4 @@ void _mlir_ciface_cim_gevm_i32(int32_t tile_id,
 
 } /* extern C */
 
-#endif /* _MLIR_INTERFACE__CIM__CIM_OPS_H_ */
+#endif /* _MLIR_INTERFACE__CIM__CIM_OPS_HPP_ */
