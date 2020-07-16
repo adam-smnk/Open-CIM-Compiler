@@ -43,6 +43,19 @@ set(MLIR_OPT_BIN "$ENV{HOME}/llvm/llvm-project/build/bin/mlir-opt")
 set(MLIR_TRANSLATE_BIN "$ENV{HOME}/llvm/llvm-project/build/bin/mlir-translate")
 set(LLC_BIN "llc")
 
+# Intermediate file extensions
+set(MLIR_GEN_EXTENSION ".mlir")
+set(MLIR_CIM_EXTENSION "_cim.mlir")
+set(OBJ_GEN_EXTENSION ".o")
+
+# Linalg to CIM lowering flags
+separate_arguments(MLIR_OPT_CIM_FLAGS UNIX_COMMAND "--convert-linalg-to-cim --convert-cim-to-std --cse")
+
+# MLIR to .obj compilation flags
+separate_arguments(MLIR_OPT_FLAGS UNIX_COMMAND "--convert-linalg-to-cim --convert-cim-to-std --convert-linalg-to-loops --convert-loop-to-std --convert-std-to-llvm=\'emit-c-wrappers=1\' --cse")
+separate_arguments(MLIR_TRANSLATE_FLAGS UNIX_COMMAND "--mlir-to-llvmir")
+separate_arguments(LLC_FLAGS UNIX_COMMAND "--filetype=obj")
+
 #################################################
 # Teckyl Settings
 #################################################

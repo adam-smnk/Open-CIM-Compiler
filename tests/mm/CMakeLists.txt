@@ -6,7 +6,6 @@ set(TC_SOURCES
 )
 
 set(MLIR_GEN_DIR ${CMAKE_CURRENT_BINARY_DIR}/mlir_gen)
-set(MLIR_GEN_EXTENSION ".mlir")
 set(MLIR_FILES)
 
 tc_to_cim(
@@ -21,9 +20,6 @@ tc_to_cim(
 #################################################
 set(CIM_FILES)
 set(MLIR_CIM_DIR ${CMAKE_CURRENT_BINARY_DIR}/mlir_gen)
-set(MLIR_CIM_EXTENSION "_cim.mlir")
-
-separate_arguments(MLIR_OPT_CIM_FLAGS UNIX_COMMAND "--convert-linalg-to-cim --convert-cim-to-std --cse")
 
 mlir_opt(
   CIM_FILES
@@ -33,16 +29,16 @@ mlir_opt(
   "${MLIR_OPT_CIM_FLAGS}"
 )
 
+# Generate lowered MLIR for debugging
+add_custom_target(mm_mlir_debug ALL
+  DEPENDS ${CIM_FILES}
+)
+
 #################################################
 # Compile MLIR to .obj
 #################################################
 set(OBJ_GEN_DIR ${CMAKE_CURRENT_BINARY_DIR}/obj_gen)
-set(OBJ_GEN_EXTENSION ".o")
 set(OBJ_FILES)
-
-separate_arguments(MLIR_OPT_FLAGS UNIX_COMMAND "--convert-linalg-to-cim --convert-cim-to-std --convert-std-to-llvm=\'emit-c-wrappers=1\' --cse")
-separate_arguments(MLIR_TRANSLATE_FLAGS UNIX_COMMAND "--mlir-to-llvmir")
-separate_arguments(LLC_FLAGS UNIX_COMMAND "--filetype=obj")
 
 compile_mlir(
   OBJ_FILES
@@ -54,20 +50,15 @@ compile_mlir(
   "${LLC_FLAGS}"
 )
 
-# Generate lowered MLIR for debugging
-add_custom_target(mm_mlir_debug ALL
-  DEPENDS ${CIM_FILES}
-)
-
 #################################################
 # Compile test application
 #################################################
-set(MM_SOURCES
+set(SOURCES
   mm.cpp
 )
 
 add_executable(test-cim-mm
-  ${MM_SOURCES}
+  ${SOURCES}
   ${OBJ_FILES}
 )
 
