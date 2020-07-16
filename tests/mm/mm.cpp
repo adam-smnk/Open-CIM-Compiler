@@ -1,4 +1,5 @@
 #include "mlir_interface/memref/memref.hpp"
+#include "utility/utility.hpp"
 
 #include <array>
 #include <cstdint>
@@ -41,5 +42,14 @@ int main() {
   memref::MemRef<int32_t, rank> B((int32_t *)matB, bDim);
   memref::MemRef<int32_t, rank> C((int32_t *)matC, cDim);
 
+  std::cout << "A Matrix:\n";
+  utility::printMatrix(A);
+
+  std::cout << "B Matrix:\n";
+  utility::printMatrix(B);
+
   _mlir_ciface_mm(&A.memRefDesc, &B.memRefDesc, &C.memRefDesc);
+
+  std::cout << "GEMM result:\n";
+  utility::printMatrix(C);
 }
