@@ -1,0 +1,4 @@
+def mm(int32(M,K) A, int32(N,K) B) -> (int32(M,N) C)
+{
+  C(i,j) += A(i,k) * B(j,k) where i in 0:M, k in 0:K, j in 0:N
+}

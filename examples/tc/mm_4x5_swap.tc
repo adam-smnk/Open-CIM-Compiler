@@ -1,0 +1,4 @@
+def mm4x3(int32(P,M,L,K) A, int32(N,K,L,P,Q) B) -> (int32(M,N,Q) C)
+{
+  C(m,n,q) += A(p,m,l,k) * B(n,k,l,p,q) where m in 0:M, k in 0:K, n in 0:N, l in 0:L, p in 0:P, q in 0:Q
+}

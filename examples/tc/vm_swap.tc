@@ -1,0 +1,4 @@
+def vm(int32(K) A, int32(N,K) B) -> (int32(N) C)
+{
+  C(n) += A(k) * B(n, k) where k in 0:K, n in 0:N
+}

@@ -1,0 +1,14 @@
+def mm_int8(int8(M,K) A, int8(K,N) B) -> (int8(M,N) C)
+{
+  C(i,j) += A(i,k) * B(k,j) where i in 0:M, k in 0:K, j in 0:N
+}
+
+def mm_int16(int16(M,K) A1, int16(K,N) B1) -> (int16(M,N) C1)
+{
+  C1(i,j) += A1(i,k) * B1(k,j) where i in 0:M, k in 0:K, j in 0:N
+}
+
+def mm_int32(int32(M,K) A2, int32(K,N) B2) -> (int32(M,N) C2)
+{
+  C2(i,j) += A2(i,k) * B2(k,j) where i in 0:M, k in 0:K, j in 0:N
+}
