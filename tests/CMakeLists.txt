@@ -1,4 +1,5 @@
 add_subdirectory(mm)
 add_subdirectory(mm_transpose)
 add_subdirectory(vm)
+add_subdirectory(vm_transpose)
 add_subdirectory(hello_world)
