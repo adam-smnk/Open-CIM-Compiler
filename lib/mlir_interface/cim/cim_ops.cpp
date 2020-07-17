@@ -1,6 +1,7 @@
 #include "mlir_interface/cim/cim_ops.hpp"
 
 #include <stdlib.h>
+#include <string.h>
 
 template <typename elementType>
 static void
@@ -12,9 +13,10 @@ cim_configure_crossbar_helper(int32_t tile_id,
 
   // TODO: Add calls to CIM library to get biases and proper B mapping
   uint8_t *bias = (uint8_t *)malloc(N * sizeof(elementType));
+  memset(bias, 0, N * sizeof(elementType));
 
-  cim_configure_crossbar(tile_id, (uint8_t **)&B->allocated[B->offset],
-                         (uint8_t *)bias, N, K);
+  cim_configure_crossbar(tile_id, (uint8_t **)B->aligned, (uint8_t *)bias, N,
+                         K);
 
   free(bias);
 }
@@ -28,8 +30,8 @@ static void cim_gemm_helper(int32_t tile_id,
   const uint32_t N = C->sizes[1];
   const uint32_t K = A->sizes[1];
 
-  cim_gemm(tile_id, (uint8_t *)&A->allocated[A->offset], M, N, K, K, 0, 0,
-           (uint8_t *)&C->allocated[C->offset], N);
+  cim_gemm(tile_id, (uint8_t *)A->aligned, M, N, K, K, 0, 0,
+           (uint8_t *)C->aligned, N);
 }
 
 template <typename elementType>
@@ -40,8 +42,7 @@ static void cim_gevm_helper(int32_t tile_id,
   const uint32_t N = C->sizes[0];
   const uint32_t K = A->sizes[0];
 
-  cim_gevm(tile_id, (uint8_t *)&A->allocated[A->offset], K, N, 0, 0,
-           (uint8_t *)&C->allocated[C->offset]);
+  cim_gevm(tile_id, (uint8_t *)A->aligned, K, N, 0, 0, (uint8_t *)C->aligned);
 }
 
 // MLIR cim.barrier
