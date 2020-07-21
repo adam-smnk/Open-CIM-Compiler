@@ -1,0 +1,55 @@
+def mm_dim_err(int32(M,N,Q) A, int32(K,L,P) B) -> (int32(M,N) C)
+{
+  C(m,n) += A(m,n,q) * B(k,l,p) where m in 0:M, k in 0:K, n in 0:N, l in 0:L, p in 0:P, q in 0:Q
+}
+
+def mm_dim_err1(int32(M,N) A1, int32(Q,K,L,P) B1) -> (int32(M,N) C1)
+{
+  C1(m,n) += A1(m,n) * B1(q,k,l,p) where m in 0:M, k in 0:K, n in 0:N, l in 0:L, p in 0:P, q in 0:Q
+}
+
+def mm_dim_err2(int32(M) A2, int32(M,Q) B2) -> (int32(M,N) C2)
+{
+  C2(m,n) += A2(m) * B2(m,q) where m in 0:M, n in 0:N, q in 0:Q
+}
+
+def mm_dim_err3(int32(M) A3, int32(M,Q) B3) -> (int32(N) C3)
+{
+  C3(n) += A3(m) * B3(m,q) where m in 0:M, n in 0:N, q in 0:Q
+}
+
+def mm_dim_err4(int32(M) A4, int32(M,Q,N) B4) -> (int32(N) C4)
+{
+  C4(n) += A4(m) * B4(m,q,n) where m in 0:M, n in 0:N, q in 0:Q
+}
+
+def mm_dim_err5(int32(N) A5, int32(N) B5) -> (int32(N) C5)
+{
+  C5(n) += A5(n) * B5(n) where n in 0:N
+}
+
+def mm_dim_err6(int32(M,N,Q) A6, int32(M,N,Q) B6) -> (int32(M,N,Q) C6)
+{
+  C6(m,n,q) += A6(m,n,q) * B6(m,n,q) where m in 0:M, n in 0:N, q in 0:Q
+}
+
+def mm_dim_err7(int32(M,N) A7, int32(M,N) B7) -> (int32(M,N) C7)
+{
+  C7(m,n) += A7(m,n) * B7(m,n) where m in 0:M, n in 0:N
+}
+
+def mm_dim_err8(int32(M,N) A8, int32(N,M) B8) -> (int32(M,N) C8)
+{
+  C8(m,n) += A8(m,n) * B8(n,m) where m in 0:M, n in 0:N
+}
+
+def mm_dim_err9(int32(M,N) A9, int32(N,M) B9) -> (int32(M) C9)
+{
+  C9(m) += A9(m,n) * B9(n,m) where m in 0:M, n in 0:N
+}
+
+def mm_dim_err_a1(int32(M,K) A10, int32(K,N) B10) -> (int32(M,N,Q) C10)
+{
+  C10(m,n,q) += A10(m,k) * B10(k,n) where m in 0:M, k in 0:K, n in 0:N, q in 0:Q
+}
+
