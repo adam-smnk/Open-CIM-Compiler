@@ -1,0 +1,19 @@
+def mm(int32(N,Q,K) A, int32(K,M,P) B) -> (int32(M,P,N,Q) C)
+{
+  C(i,p,j,q) += A(j,q,k) * B(k,i,p) where i in 0:M, k in 0:K, j in 0:N, q in 0:Q, p in 0:P
+}
+
+def mm2(int32(K,P,M) A2, int32(Q,N,K) B2) -> (int32(Q,N,M,P) C2)
+{
+  C2(q,j,i,p) += A2(k,p,i) * B2(q,j,k) where i in 0:M, k in 0:K, j in 0:N, q in 0:Q, p in 0:P
+}
+
+def mm3(int32(N,K) A3, int32(M,K) B3) -> (int32(M,N) C3)
+{
+  C3(i,j) += A3(j,k) * B3(i,k) where i in 0:M, k in 0:K, j in 0:N
+}
+
+def mm4(int32(N,K) A4, int32(K,M) B4) -> (int32(M,N) C4)
+{
+  C4(i,j) += A4(j,k) * B4(k,i) where i in 0:M, k in 0:K, j in 0:N
+}
