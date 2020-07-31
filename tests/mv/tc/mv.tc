@@ -1,0 +1,4 @@
+def mv(int32(N,K) A, int32(K) B) -> (int32(N) C)
+{
+  C(n) += A(n, k) * B(k) where k in 0:K, n in 0:N
+}

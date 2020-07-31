@@ -1,0 +1,4 @@
+def tc4x5x3(int32(P,K,L,M) A, int32(K,Q,L,N,P) B) -> (int32(M,N,Q) C)
+{
+  C(m,n,q) += A(p,k,l,m) * B(k,q,l,n,p) where m in 0:M, k in 0:K, n in 0:N, l in 0:L, p in 0:P, q in 0:Q
+}

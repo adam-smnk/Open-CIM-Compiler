@@ -1,4 +1,8 @@
 add_subdirectory(mm)
 add_subdirectory(mm_transpose)
+add_subdirectory(mv)
+add_subdirectory(mv_transpose)
+add_subdirectory(tc_3x3x2)
+add_subdirectory(tc_4x5x3)
 add_subdirectory(vm)
 add_subdirectory(vm_transpose)
