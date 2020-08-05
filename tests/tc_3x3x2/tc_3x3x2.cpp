@@ -1,6 +1,7 @@
 #include "mlir_interface/memref/memref.hpp"
 #include "utility/utility.hpp"
 
+#include <algorithm>
 #include <array>
 #include <cstdint>
 #include <iostream>
@@ -56,13 +57,11 @@ int main() {
   std::cout << "Contraction using CIM result:\n";
   utility::printTensor(C);
 
-  // Clear output matrix
-  std::fill(matC, matC + (M * N), 0);
-
   // Compute TTGT manually
   int32_t flatA[M][K * L] = {};
   int32_t flatB[K * L][N] = {};
   int32_t flatC[M][N] = {};
+  int32_t outputC[M * N] = {0};
 
   // Transpose (flatten) A
   for (int k = 0; k < K; ++k) {
@@ -98,10 +97,18 @@ int main() {
   // Transpose (unflatten) C
   for (int m = 0; m < M; ++m) {
     for (int n = 0; n < N; ++n) {
-      matC[m * N + n] = flatC[m][n];
+      outputC[m * N + n] = flatC[m][n];
     }
   }
+  memref::MemRef<int32_t, rankC> manualC((int32_t *)outputC, cDim);
 
   std::cout << "Manual contraction result:\n";
-  utility::printTensor(C);
+  utility::printTensor(manualC);
+
+  std::cout << "Contration results are equal: ";
+  if (std::equal(std::begin(matC), std::end(matC), std::begin(outputC))) {
+    std::cout << "TRUE\n";
+  } else {
+    std::cout << "FALSE\n";
+  }
 }

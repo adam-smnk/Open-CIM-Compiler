@@ -52,4 +52,9 @@ int main() {
 
   std::cout << "GEMM result:\n";
   utility::printMatrix(C);
+
+  _mlir_ciface_mm(&A.memRefDesc, &B.memRefDesc, &C.memRefDesc);
+
+  std::cout << "C += GEMM(A, B):\n";
+  utility::printMatrix(C);
 }

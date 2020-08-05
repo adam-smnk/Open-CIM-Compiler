@@ -1,9 +1,9 @@
 def mv(int32(N,K) A, int32(K) B) -> (int32(N) C)
 {
-  C(n) += A(n, k) * B(k) where k in 0:K, n in 0:N
+  C(n) +=! A(n, k) * B(k) where k in 0:K, n in 0:N
 }
 
 def mv_At(int32(K,N) A1, int32(K) B1) -> (int32(N) C1)
 {
-  C1(n) += A1(k, n) * B1(k) where k in 0:K, n in 0:N
+  C1(n) +=! A1(k, n) * B1(k) where k in 0:K, n in 0:N
 }
