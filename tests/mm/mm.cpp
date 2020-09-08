@@ -4,6 +4,13 @@
 #include <array>
 #include <cstdint>
 #include <iostream>
+#include <stdio.h>
+
+extern "C" {
+#include "libs/cim.h"
+#include "libs/gic.h"
+#include "libs/m5ops.h"
+}
 
 // Functions generated from TC
 extern "C" {
@@ -13,6 +20,14 @@ void _mlir_ciface_mm(memref::MemRefDescriptor<int32_t, 2> *A,
 }
 
 int main() {
+  enable_caches();
+#ifdef ENABLE_INTERRUPTS
+  gic_init();
+  gic_enable_interrupt(131);
+#endif
+
+  printf("\n\nMain starts\n\n");
+
   // Matrix-matrix multiplication
   // C[M][N] =  A[M][K] * B[K][N]
   const size_t rank = 2;
@@ -57,4 +72,6 @@ int main() {
 
   std::cout << "C += GEMM(A, B):\n";
   utility::printMatrix(C);
+
+  M5_EXIT();
 }

@@ -3,6 +3,12 @@
 #include <stdlib.h>
 #include <string.h>
 
+extern "C" {
+#include "libs/cim.h"
+}
+
+static const int32_t simTileId = 3;
+
 template <typename elementType>
 static void
 cim_configure_crossbar_helper(int32_t tile_id,
@@ -13,10 +19,11 @@ cim_configure_crossbar_helper(int32_t tile_id,
 
   // TODO: Add calls to CIM library to get biases and proper B mapping
   uint8_t *bias = (uint8_t *)malloc(N * sizeof(elementType));
-  memset(bias, 0, N * sizeof(elementType));
+  memset(bias, 2, N * sizeof(elementType));
 
-  cim_configure_crossbar(tile_id, (uint8_t **)B->aligned, (uint8_t *)bias, N,
-                         K);
+  // cim_configure_crossbar(tile_id, (uint8_t **)B->aligned, (uint8_t *)bias, N,
+  //                        K);
+  cim_blas_configure(simTileId, (uint8_t **)B->aligned, (uint8_t *)bias, N, K);
 
   free(bias);
 }
@@ -30,7 +37,9 @@ static void cim_gemm_helper(int32_t tile_id,
   const uint32_t N = C->sizes[1];
   const uint32_t K = A->sizes[1];
 
-  cim_gemm(tile_id, (uint8_t *)A->aligned, M, N, K, K, 0, 0,
+  // cim_gemm(tile_id, (uint8_t *)A->aligned, M, N, K, K, 0, 0,
+  //          (uint8_t *)C->aligned, N);
+  cim_gemm(simTileId, (uint8_t *)A->aligned, M, N, K, K, 0, 0,
            (uint8_t *)C->aligned, N);
 }
 
@@ -42,11 +51,16 @@ static void cim_gevm_helper(int32_t tile_id,
   const uint32_t N = C->sizes[0];
   const uint32_t K = A->sizes[0];
 
-  cim_gevm(tile_id, (uint8_t *)A->aligned, K, N, 0, 0, (uint8_t *)C->aligned);
+  // cim_gevm(tile_id, (uint8_t *)A->aligned, K, N, 0, 0, (uint8_t
+  // *)C->aligned);
+  cim_gemv(simTileId, (uint8_t *)A->aligned, K, N, 0, 0, (uint8_t *)C->aligned);
 }
 
 // MLIR cim.barrier
-void _mlir_ciface_cim_barrier(int32_t tile_id) { cim_await(tile_id); }
+void _mlir_ciface_cim_barrier(int32_t tile_id) {
+  // cim_await(tile_id);
+  cim_spinlock(simTileId);
+}
 
 // MLIR cim.write_to_crossbar
 void _mlir_ciface_cim_write_to_crossbar_i8(

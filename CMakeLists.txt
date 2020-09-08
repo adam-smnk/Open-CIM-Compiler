@@ -13,20 +13,53 @@ set(CIM_TILE_SIZE 0)
 set(CIM_MIN_WRITES 0)
 
 #################################################
+# Architecture Settings
+#################################################
+set(CMAKE_SYSTEM_NAME Generic)
+set(CMAKE_SYSTEM_PROCESSOR arm)
+
+set(CODE_TYPE "arm")
+set(CPU "-mcpu=cortex-a9")
+# set(CPU "-march=armv7-a")
+# set(ARCH_FLAGS "-mcpu=${CPU} -mthumb -mno-thumb-interwork -msoft-float -mfloat-abi=soft -m${CODE_TYPE}")
+set(ARCH_FLAGS "${CPU} -mfloat-abi=soft -m${CODE_TYPE}")
+
+set(SIM_ROOT "$ENV{HOME}/EMSim")
+
+set(SIM_INCLUDES "-I${SIM_ROOT}/libs -I${SIM_ROOT}")
+set(SIM_LINKMAP "${SIM_ROOT}/benchmarks/linkmap.txt")
+
+set(LD_SCRIPT "${SIM_ROOT}/libs/gcc.ld")
+set(LD_FLAGS "-T${LD_SCRIPT} -Wl,--build-id=none,-Map=${SIM_LINKMAP} --specs=nosys.specs -lc -lnosys ${SIM_INCLUDES}")
+
+# Do not run linker on compiler check
+set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
+
+#################################################
 # Compilation Settings
 #################################################
-set(CMAKE_C_COMPILER "clang")
-set(CMAKE_CXX_COMPILER "clang++")
+# set(CMAKE_C_COMPILER "clang")
+# set(CMAKE_CXX_COMPILER "clang++")
 
-set(CMAKE_C_FLAGS  "${CMAKE_C_FLAGS} -O2 -fexceptions -fno-rtti -fPIC")
-set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -O2 -fexceptions -fno-rtti -fPIC")
-SET(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS}")
+# set(CMAKE_C_FLAGS  "${CMAKE_C_FLAGS} -O2 -fexceptions -fno-rtti -fPIC")
+# set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -O2 -fexceptions -fno-rtti -fPIC")
+# SET(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS}")
+set(CMAKE_C_COMPILER "arm-none-eabi-gcc")
+set(CMAKE_CXX_COMPILER "arm-none-eabi-g++")
+set(CMAKE_LINKER "arm-none-eabi-ld")
+
+set(CMAKE_C_FLAGS  "${CMAKE_C_FLAGS} -O2 ${ARCH_FLAGS} -fno-exceptions -fPIC")
+set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -O2 ${ARCH_FLAGS} -fno-exceptions -fno-rtti -fPIC")
+SET(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} ${ARCH_FLAGS} ${LD_FLAGS}" CACHE INTERNAL "")
 
 set(CMAKE_BUILD_TYPE "")
 
 project("GemmInMemory")
 
 include_directories(${CMAKE_SOURCE_DIR}/include)
+include_directories(${SIM_ROOT})
+include_directories(${SIM_ROOT}/libs)
+link_directories(${SIM_ROOT}/libs)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
@@ -63,7 +96,7 @@ separate_arguments(MLIR_OPT_CIM_FLAGS UNIX_COMMAND "${MLIR_CIM_FLAGS} ${MLIR_EXT
 # MLIR to .obj compilation flags
 separate_arguments(MLIR_OPT_FLAGS UNIX_COMMAND "${MLIR_CIM_FLAGS} ${MLIR_CONV_FLAGS} ${MLIR_EXTRA_FLAGS} ${MLIR_COMMON_FLAGS}")
 separate_arguments(MLIR_TRANSLATE_FLAGS UNIX_COMMAND "--mlir-to-llvmir")
-separate_arguments(LLC_FLAGS UNIX_COMMAND "--filetype=obj --relocation-model=pic")
+separate_arguments(LLC_FLAGS UNIX_COMMAND "--march=arm --filetype=obj --relocation-model=pic")
 
 #################################################
 # Cmake includes
