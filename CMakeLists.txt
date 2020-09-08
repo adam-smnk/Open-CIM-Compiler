@@ -20,11 +20,14 @@ set(CMAKE_SYSTEM_PROCESSOR arm)
 
 set(CODE_TYPE "arm")
 set(CPU "-mcpu=cortex-a9")
-# set(CPU "-march=armv7-a")
-# set(ARCH_FLAGS "-mcpu=${CPU} -mthumb -mno-thumb-interwork -msoft-float -mfloat-abi=soft -m${CODE_TYPE}")
 set(ARCH_FLAGS "${CPU} -mfloat-abi=soft -m${CODE_TYPE}")
 
-set(SIM_ROOT "$ENV{HOME}/EMSim")
+if(DEFINED ENV{SIM_ROOT})
+  set(SIM_ROOT "$ENV{SIM_ROOT}")
+else()
+  set(SIM_ROOT "$ENV{HOME}/EMSim")
+  message("Using the default SIM_ROOT path: ${SIM_ROOT}")
+endif()
 
 set(SIM_INCLUDES "-I${SIM_ROOT}/libs -I${SIM_ROOT}")
 set(SIM_LINKMAP "${SIM_ROOT}/benchmarks/linkmap.txt")
@@ -34,6 +37,14 @@ set(LD_FLAGS "-T${LD_SCRIPT} -Wl,--build-id=none,-Map=${SIM_LINKMAP} --specs=nos
 
 # Do not run linker on compiler check
 set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
+
+# Simulator libraries
+set(SIM_OBJ
+  ${SIM_ROOT}/libs/cim.o
+  ${SIM_ROOT}/libs/syscalls.o
+  ${SIM_ROOT}/libs/gic.o
+  ${SIM_ROOT}/libs/startup.o
+)
 
 #################################################
 # Compilation Settings
