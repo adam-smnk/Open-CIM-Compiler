@@ -1,16 +1,11 @@
 #include "mlir_interface/memref/memref.hpp"
+#include "simulator_interface/cim_sim.h"
 #include "utility/utility.hpp"
 
 #include <array>
 #include <cstdint>
 #include <iostream>
 #include <stdio.h>
-
-extern "C" {
-#include "libs/cim.h"
-#include "libs/gic.h"
-#include "libs/m5ops.h"
-}
 
 // Functions generated from TC
 extern "C" {
@@ -20,13 +15,7 @@ void _mlir_ciface_mm(memref::MemRefDescriptor<int32_t, 2> *A,
 }
 
 int main() {
-  enable_caches();
-#ifdef ENABLE_INTERRUPTS
-  gic_init();
-  gic_enable_interrupt(131);
-#endif
-
-  printf("\n\nMain starts\n\n");
+  simulator_init();
 
   // Matrix-matrix multiplication
   // C[M][N] =  A[M][K] * B[K][N]
@@ -73,5 +62,5 @@ int main() {
   std::cout << "C += GEMM(A, B):\n";
   utility::printMatrix(C);
 
-  M5_EXIT();
+  simulator_terminate();
 }

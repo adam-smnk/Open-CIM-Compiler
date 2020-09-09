@@ -4,9 +4,11 @@ set(MLIR_INTERFACE_SOURCES
 
 add_library(mlirInterface STATIC
   ${MLIR_INTERFACE_SOURCES}
-  ${SIM_OBJ}
 )
 
 # target_link_libraries(mlirInterface PUBLIC
 #   cimSimMock
 # )
+target_link_libraries(mlirInterface PUBLIC
+  simulatorInterface
+)
