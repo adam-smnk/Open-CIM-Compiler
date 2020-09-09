@@ -1,4 +1,5 @@
 #include "mlir_interface/memref/memref.hpp"
+#include "simulator_interface/cim_sim.h"
 #include "utility/utility.hpp"
 
 #include <algorithm>
@@ -17,6 +18,8 @@ void _mlir_ciface_vm_Bt(memref::MemRefDescriptor<int32_t, 1> *A,
 }
 
 int main() {
+  simulator_init();
+
   // Vector-matrix multiplication
   // C[N] =  A[K] * B[K][N]
   const size_t matRank = 2;
@@ -70,4 +73,6 @@ int main() {
   _mlir_ciface_vm_Bt(&A.memRefDesc, &Bt.memRefDesc, &C.memRefDesc);
   std::cout << "A * D^t result:\n";
   utility::printTensor(C);
+
+  simulator_terminate();
 }

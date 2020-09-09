@@ -1,4 +1,5 @@
 #include "mlir_interface/memref/memref.hpp"
+#include "simulator_interface/cim_sim.h"
 #include "utility/utility.hpp"
 
 #include <array>
@@ -16,6 +17,8 @@ void _mlir_ciface_mv(memref::MemRefDescriptor<int32_t, rankA> *A,
 }
 
 int main() {
+  simulator_init();
+
   // Matrix-vector multiplication
   // C[N] =  A[N][K] * B[K]
   const int32_t N = 3;
@@ -49,4 +52,6 @@ int main() {
 
   std::cout << "GEMV result:\n";
   utility::printTensor(C);
+
+  simulator_terminate();
 }

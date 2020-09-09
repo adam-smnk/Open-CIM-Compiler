@@ -1,4 +1,5 @@
 #include "mlir_interface/memref/memref.hpp"
+#include "simulator_interface/cim_sim.h"
 #include "utility/utility.hpp"
 
 #include <array>
@@ -25,6 +26,8 @@ void _mlir_ciface_mm_AtBt(memref::MemRefDescriptor<int32_t, 2> *A,
 }
 
 int main() {
+  simulator_init();
+
   // Matrix-matrix multiplication
   // C[M][N] =  A[M][K] * B[K][N]
   const size_t rank = 2;
@@ -75,4 +78,6 @@ int main() {
   _mlir_ciface_mm_AtBt(&A.memRefDesc, &B.memRefDesc, &C.memRefDesc);
   std::cout << "A^t * B^t result:\n";
   utility::printMatrix(C);
+
+  simulator_terminate();
 }

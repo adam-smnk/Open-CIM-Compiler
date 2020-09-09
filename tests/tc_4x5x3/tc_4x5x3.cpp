@@ -1,4 +1,5 @@
 #include "mlir_interface/memref/memref.hpp"
+#include "simulator_interface/cim_sim.h"
 #include "utility/utility.hpp"
 
 #include <array>
@@ -17,6 +18,8 @@ void _mlir_ciface_tc4x5x3(memref::MemRefDescriptor<int32_t, rankA> *A,
 }
 
 int main() {
+  simulator_init();
+
   const int32_t M = 3;
   const int32_t N = 2;
   const int32_t K = 4;
@@ -66,4 +69,6 @@ int main() {
     }
     std::cout << "\n";
   }
+
+  simulator_terminate();
 }
