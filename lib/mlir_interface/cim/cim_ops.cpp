@@ -19,7 +19,7 @@ cim_configure_crossbar_helper(int32_t tile_id,
 
   // TODO: Add calls to CIM library to get biases and proper B mapping
   uint8_t *bias = (uint8_t *)malloc(N * sizeof(elementType));
-  memset(bias, 2, N * sizeof(elementType));
+  memset(bias, 0, N * sizeof(elementType));
 
   // cim_configure_crossbar(tile_id, (uint8_t **)B->aligned, (uint8_t *)bias, N,
   //                        K);
