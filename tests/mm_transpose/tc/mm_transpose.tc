@@ -1,19 +1,19 @@
-def mm(int32(M,K) A, int32(K,N) B) -> (int32(M,N) C)
+def mm(int8(M,K) A, int8(K,N) B) -> (int8(M,N) C)
 {
   C(i,j) +=! A(i,k) * B(k,j) where i in 0:M, k in 0:K, j in 0:N
 }
 
-def mm_At(int32(K,M) A1, int32(K,N) B1) -> (int32(M,N) C1)
+def mm_At(int8(K,M) A1, int8(K,N) B1) -> (int8(M,N) C1)
 {
   C1(i,j) +=! A1(k,i) * B1(k,j) where i in 0:M, k in 0:K, j in 0:N
 }
 
-def mm_Bt(int32(M,K) A2, int32(N,K) B2) -> (int32(M,N) C2)
+def mm_Bt(int8(M,K) A2, int8(N,K) B2) -> (int8(M,N) C2)
 {
   C2(i,j) +=! A2(i,k) * B2(j,k) where i in 0:M, k in 0:K, j in 0:N
 }
 
-def mm_AtBt(int32(K,M) A3, int32(N,K) B3) -> (int32(M,N) C3)
+def mm_AtBt(int8(K,M) A3, int8(N,K) B3) -> (int8(M,N) C3)
 {
   C3(i,j) +=! A3(k,i) * B3(j,k) where i in 0:M, k in 0:K, j in 0:N
 }

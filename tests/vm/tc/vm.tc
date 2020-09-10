@@ -1,4 +1,4 @@
-def vm(int32(K) A, int32(K,N) B) -> (int32(N) C)
+def vm(int8(K) A, int8(K,N) B) -> (int8(N) C)
 {
   C(n) += A(k) * B(k, n) where k in 0:K, n in 0:N
 }
