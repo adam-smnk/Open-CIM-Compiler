@@ -41,6 +41,7 @@ set(SOURCES
 add_executable(test-cim-tc-4x5x3
   ${SOURCES}
   ${OBJ_FILES}
+  ${SIM_OBJ}
 )
 
 target_link_libraries(test-cim-tc-4x5x3

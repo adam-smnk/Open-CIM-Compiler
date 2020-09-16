@@ -40,6 +40,7 @@ set(SOURCES
 add_executable(test-cim-vm
   ${SOURCES}
   ${OBJ_FILES}
+  ${SIM_OBJ}
 )
 
 target_link_libraries(test-cim-vm

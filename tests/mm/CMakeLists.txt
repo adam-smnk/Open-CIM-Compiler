@@ -41,6 +41,7 @@ set(SOURCES
 add_executable(test-cim-mm
   ${SOURCES}
   ${OBJ_FILES}
+  ${SIM_OBJ}
 )
 
 target_link_libraries(test-cim-mm

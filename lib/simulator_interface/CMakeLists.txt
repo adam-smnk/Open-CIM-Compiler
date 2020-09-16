@@ -4,5 +4,4 @@ set(SIMULATOR_INTERFACE_SOURCES
 
 add_library(simulatorInterface STATIC
   ${SIMULATOR_INTERFACE_SOURCES}
-  ${SIM_OBJ}
 )
