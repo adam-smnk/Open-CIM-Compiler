@@ -59,8 +59,8 @@ set(CMAKE_C_COMPILER "arm-none-eabi-gcc")
 set(CMAKE_CXX_COMPILER "arm-none-eabi-g++")
 set(CMAKE_LINKER "arm-none-eabi-ld")
 
-set(CMAKE_C_FLAGS  "${CMAKE_C_FLAGS} -O2 ${ARCH_FLAGS} -fno-exceptions -fPIC")
-set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -O2 ${ARCH_FLAGS} -fno-exceptions -fno-rtti -fPIC")
+set(CMAKE_C_FLAGS  "${CMAKE_C_FLAGS} -O3 ${ARCH_FLAGS} -fno-exceptions -fPIC")
+set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -O3 ${ARCH_FLAGS} -fno-exceptions -fno-rtti -fPIC")
 SET(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} ${ARCH_FLAGS} ${LD_FLAGS}" CACHE INTERNAL "")
 
 set(CMAKE_BUILD_TYPE "")
