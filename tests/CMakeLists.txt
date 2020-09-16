@@ -1,3 +1,5 @@
+add_subdirectory(1mm)
+add_subdirectory(2mm)
 add_subdirectory(kronecker3)
 add_subdirectory(mlp1)
 add_subdirectory(mlp3)
