@@ -63,6 +63,32 @@ void printVector(const memref::MemRefDescriptor<T, 1> &vec) {
   printf("|\n");
 }
 
+template <typename T>
+void computeGemm(const memref::MemRef<T, 2> &A, const memref::MemRef<T, 2> &B,
+                 const memref::MemRef<T, 2> &C) {
+  computeGemm(A.memRefDesc, B.memRefDesc, C.memRefDesc);
+}
+
+template <typename T>
+void computeGemm(const memref::MemRefDescriptor<T, 2> &A,
+                 const memref::MemRefDescriptor<T, 2> &B,
+                 const memref::MemRefDescriptor<T, 2> &C) {
+  const uint32_t M = C.sizes[0];
+  const uint32_t N = C.sizes[1];
+  const uint32_t K = A.sizes[1];
+
+  for (int m = 0; m < M; ++m) {
+    for (int n = 0; n < N; ++n) {
+      T sum = 0;
+      for (int k = 0; k < K; ++k) {
+        sum += A.aligned[m * K + k] * B.aligned[k * N + n];
+      }
+
+      C.aligned[m * N + n] = sum;
+    }
+  }
+}
+
 } // namespace utility
 
 #endif /* _UTILITY__UTILITY_TPP_ */

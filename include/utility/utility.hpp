@@ -20,6 +20,15 @@ void printVector(const memref::MemRef<T, 1> &memRef);
 template <typename T>
 void printVector(const memref::MemRefDescriptor<T, 1> &vec);
 
+template <typename T>
+void computeGemm(const memref::MemRef<T, 2> &A, const memref::MemRef<T, 2> &B,
+                 const memref::MemRef<T, 2> &C);
+
+template <typename T>
+void computeGemm(const memref::MemRefDescriptor<T, 2> &A,
+                 const memref::MemRefDescriptor<T, 2> &B,
+                 const memref::MemRefDescriptor<T, 2> &C);
+
 } // namespace utility
 
 #include "utility.tpp"
