@@ -2,6 +2,9 @@
 
 #include <stdio.h>
 
+#define TEXT_SET_COLOR "\033[0;32m"
+#define TEXT_RESET_COLOR "\033[0m"
+
 #define XBAR_PRECISION uint32_t
 
 // Use fixed crossbar precision
@@ -13,7 +16,9 @@ void cim_await(uint32_t cim_id) {
 
 void cim_configure_crossbar(uint32_t cim_id, uint8_t **B, uint8_t *bias,
                             uint32_t N, uint32_t K) {
+  printf(TEXT_SET_COLOR);
   printf("[CIM Info] Crossbar configured\n");
+  printf(TEXT_RESET_COLOR);
 
   xbar = (XBAR_PRECISION *)B;
 }
