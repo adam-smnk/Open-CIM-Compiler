@@ -1,0 +1,14 @@
+def mlp3(int32(B,N) I, int32(O,N) W1, int32(O) B1, int32(P,O) W2,
+         int32(P) B2, int32(Q,P) W3, int32(Q) B3)
+         -> (int32(B,O) O1, int32(B,P) O2, int32(B,Q) O3)
+{
+  O1(b,o) = B1(o) where b in 0:B, o in 0:O
+  O1(b,o) += I(b,n) * W1(o,n) where b in 0:B, n in 0:N, o in 0:O
+  O1(b,o) = max(O1(b,o), 0) where b in 0:B, o in 0:O
+  O2(b,p) = B2(p) where b in 0:B, p in 0:P
+  O2(b,p) += O1(b,o) * W2(p,o) where b in 0:B, p in 0:P, o in 0:O
+  O2(b,p) = max(O2(b,p), 0) where b in 0:B, p in 0:P
+  O3(b,q) = B3(q) where b in 0:B, q in 0:Q
+  O3(b,q) += O2(b,p) * W3(q,p) where b in 0:B, p in 0:P, q in 0:Q
+  O3(b,q) = max(O3(b,q), 0) where b in 0:B, q in 0:Q
+}
