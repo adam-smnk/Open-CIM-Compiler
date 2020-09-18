@@ -1,0 +1,6 @@
+def mlp1(int32(B,M) I, int32(M,N) W1, int32(N) B1) -> (int32(B,N) O1)
+{
+  O1(b,n) = B1(n) where b in 0:B, n in 0:N
+  O1(b,n) += I(b,m) * W1(m,n) where b in 0:B, m in 0:M, n in 0:N
+  O1(b,n) = max(O1(b,n), 0) where b in 0:B, n in 0:N
+}

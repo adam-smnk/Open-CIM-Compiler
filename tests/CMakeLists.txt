@@ -1,3 +1,4 @@
+add_subdirectory(mlp1)
 add_subdirectory(mm)
 add_subdirectory(mm_transpose)
 add_subdirectory(mv)
