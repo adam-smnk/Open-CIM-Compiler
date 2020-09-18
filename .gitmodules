@@ -3,4 +3,4 @@
 	url = git@github.com:adam-smnk/llvm-project.git
 [submodule "teckyl"]
 	path = teckyl
-	url = https://github.com/andidr/teckyl.git
+	url = git@github.com:adam-smnk/teckyl.git
