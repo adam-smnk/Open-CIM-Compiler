@@ -1,4 +1,5 @@
 #include "mlir_interface/memref/memref.hpp"
+#include "simulator_interface/cim_sim.h"
 #include "utility/utility.hpp"
 
 #include <array>
@@ -19,6 +20,8 @@ void _mlir_ciface_kronecker3(memref::MemRefDescriptor<int32_t, 2> *W0,
 }
 
 int main() {
+  simulator_init();
+
   const int32_t D0 = 2;
   const int32_t N0 = 3;
   const int32_t D1 = 4;
@@ -82,4 +85,6 @@ int main() {
   utility::printTensor(XW1);
   std::cout << "XW2:\n";
   utility::printTensor(XW2);
+
+  simulator_terminate();
 }

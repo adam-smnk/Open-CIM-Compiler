@@ -41,6 +41,7 @@ set(SOURCES
 add_executable(test-cim-kronecker3
   ${SOURCES}
   ${OBJ_FILES}
+  ${SIM_OBJ}
 )
 
 target_link_libraries(test-cim-kronecker3

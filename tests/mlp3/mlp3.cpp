@@ -1,4 +1,5 @@
 #include "mlir_interface/memref/memref.hpp"
+#include "simulator_interface/cim_sim.h"
 #include "utility/utility.hpp"
 
 #include <array>
@@ -22,6 +23,8 @@ void _mlir_ciface_mlp3(memref::MemRefDescriptor<int32_t, 2> *I,
 }
 
 int main() {
+  simulator_init();
+
   const int32_t B = 3;
   const int32_t N = 3;
   const int32_t O = 3;
@@ -116,4 +119,6 @@ int main() {
   utility::printTensor(O2);
   std::cout << "O3:\n";
   utility::printTensor(O3);
+
+  simulator_terminate();
 }
