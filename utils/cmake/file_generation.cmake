@@ -23,7 +23,7 @@ function(teckyl
 
     add_custom_command(
       OUTPUT ${GEN_FILE}
-      COMMAND ${TECKYL_BIN} ${TECKYL_FLAGS} ${INPUT_FILE} > ${GEN_FILE}
+      COMMAND ${TECKYL_BIN} ${TECKYL_FLAGS} ${INPUT_FILE} 2>/dev/null 1> ${GEN_FILE}
       WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
       DEPENDS ${INPUT_FILE}
     )
