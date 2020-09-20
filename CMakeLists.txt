@@ -3,6 +3,9 @@ cmake_minimum_required(VERSION 3.4.3)
 #################################################
 # CIM Settings
 #################################################
+# Number of available CIM tile units
+set(CIM_NUM_TILES 0)
+
 # CIM tile size
 set(CIM_TILE_SIZE 0)
 
@@ -49,7 +52,7 @@ set(MLIR_CIM_EXTENSION "_cim.mlir")
 set(OBJ_GEN_EXTENSION ".o")
 
 # CIM compilation flags
-set(MLIR_CIM_FLAGS "--convert-linalg-to-cim --cim-tile-size=${CIM_TILE_SIZE} ${CIM_MIN_WRITES} --convert-cim-to-std")
+set(MLIR_CIM_FLAGS "--convert-linalg-to-cim --cim-num-tiles=${CIM_NUM_TILES} --cim-tile-size=${CIM_TILE_SIZE} ${CIM_MIN_WRITES} --convert-cim-to-std")
 
 # Linalg to CIM lowering flags
 separate_arguments(MLIR_OPT_CIM_FLAGS UNIX_COMMAND "${MLIR_CIM_FLAGS} --cse")
