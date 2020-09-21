@@ -3,14 +3,14 @@ cmake_minimum_required(VERSION 3.4.3)
 #################################################
 # CIM Settings
 #################################################
-# Number of available CIM tile units
+# Number of available CIM tile units (int)
 set(CIM_NUM_TILES 0)
 
-# CIM tile size
+# CIM tile size (int)
 set(CIM_TILE_SIZE 0)
 
-# Minimize writes to crossbar
-set(CIM_MIN_WRITES "--cim-min-writes=0")
+# Minimize writes to crossbar (bool)
+set(CIM_MIN_WRITES 0)
 
 #################################################
 # Compilation Settings
@@ -52,13 +52,16 @@ set(MLIR_CIM_EXTENSION "_cim.mlir")
 set(OBJ_GEN_EXTENSION ".o")
 
 # CIM compilation flags
-set(MLIR_CIM_FLAGS "--convert-linalg-to-cim --cim-num-tiles=${CIM_NUM_TILES} --cim-tile-size=${CIM_TILE_SIZE} ${CIM_MIN_WRITES} --convert-cim-to-std")
+set(MLIR_CIM_FLAGS "--convert-linalg-to-cim --cim-num-tiles=${CIM_NUM_TILES} --cim-tile-size=${CIM_TILE_SIZE} --cim-min-writes=${CIM_MIN_WRITES} --convert-cim-to-std")
+set(MLIR_CONV_FLAGS "--convert-linalg-to-parallel-loops --convert-loop-to-std --convert-std-to-llvm=\'emit-c-wrappers=1\'")
+set(MLIR_EXTRA_FLAGS "--expensive-combines --loop-coalescing")
+set(MLIR_COMMON_FLAGS "--canonicalize --cse --symbol-dce")
 
 # Linalg to CIM lowering flags
-separate_arguments(MLIR_OPT_CIM_FLAGS UNIX_COMMAND "${MLIR_CIM_FLAGS} --cse")
+separate_arguments(MLIR_OPT_CIM_FLAGS UNIX_COMMAND "${MLIR_CIM_FLAGS} ${MLIR_EXTRA_FLAGS} ${MLIR_COMMON_FLAGS}")
 
 # MLIR to .obj compilation flags
-separate_arguments(MLIR_OPT_FLAGS UNIX_COMMAND "${MLIR_CIM_FLAGS} --convert-linalg-to-loops --convert-loop-to-std --convert-std-to-llvm=\'emit-c-wrappers=1\' --cse")
+separate_arguments(MLIR_OPT_FLAGS UNIX_COMMAND "${MLIR_CIM_FLAGS} ${MLIR_CONV_FLAGS} ${MLIR_EXTRA_FLAGS} ${MLIR_COMMON_FLAGS}")
 separate_arguments(MLIR_TRANSLATE_FLAGS UNIX_COMMAND "--mlir-to-llvmir")
 separate_arguments(LLC_FLAGS UNIX_COMMAND "--filetype=obj --relocation-model=pic")
 
