@@ -9,6 +9,10 @@ void simulator_init(void);
 
 void simulator_terminate(void);
 
+void simulator_mark_start(void);
+
+void simulator_mark_end(void);
+
 #ifdef __cplusplus
 }
 #endif

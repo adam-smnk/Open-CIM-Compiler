@@ -16,3 +16,7 @@ void simulator_init(void) {
 }
 
 void simulator_terminate(void) { M5_EXIT(); }
+
+void simulator_mark_start(void) { M5_WORK_BEGIN(); }
+
+void simulator_mark_end(void) { M5_WORK_END(); }
