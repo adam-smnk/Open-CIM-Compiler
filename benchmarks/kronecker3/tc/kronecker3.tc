@@ -1,0 +1,9 @@
+def kronecker3(int8(D0,N0) W0, int8(D1,N1) W1, int8(D2,N2) W2,
+              int8(M,N0,N1,N2) X)
+              -> (int8(M,D0,D1,D2) Y, int8(M,N0,D1,D2) XW1,
+              int8(M,N0,N1,D2) XW2)
+{
+  XW2(m,n0,n1,d2) += X(m,n0,n1,r_n2) * W2(d2,r_n2) where m in 0:M, n0 in 0:N0, n1 in 0:N1, d2 in 0:D2, r_n2 in 0:N2
+  XW1(m,n0,d1,d2) += XW2(m,n0,r_n1,d2) * W1(d1,r_n1) where m in 0:M, n0 in 0:N0, d1 in 0:D1, d2 in 0:D2, r_n1 in 0:N1
+  Y(m,d0,d1,d2) += XW1(m,r_n0,d1,d2) * W0(d0,r_n0) where m in 0:M, d0 in 0:D0, d1 in 0:D1, d2 in 0:D2, r_n0 in 0:N0
+}
