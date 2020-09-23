@@ -10,12 +10,12 @@ namespace utility {
 
 template <typename T, size_t rank>
 void printTensor(const memref::MemRef<T, rank> &memRef) {
-  std::cout << "Cannot print - unsupported tensor rank\n";
-  std::cout << "Tensor dims: ";
-  for (auto dim : memRef.memRefDesc.sizes) {
-    std::cout << dim << " ";
+  printf("Cannot print - unsupported tensor rank\n");
+  printf("Tensor dims: ");
+  for (int32_t dim : memRef.memRefDesc.sizes) {
+    printf("%d ", dim);
   }
-  std::cout << "\n";
+  printf("\n");
 }
 
 template <typename T>
