@@ -1,0 +1,4 @@
+def tmm(int8(M,K) A, int8(N,K) B) -> (int8(M,N) C)
+{
+  C(m,n) += A(m,k) * B(n,k) where m in 0:M, k in 0:K, n in 0:N
+}
