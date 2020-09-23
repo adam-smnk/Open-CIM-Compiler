@@ -1,4 +1,4 @@
-def tc3x3x2(int32(K,L,M) A, int32(L,K,N) B) -> (int32(M,N) C)
+def tc3x3x2(int8(K,L,M) A, int8(L,K,N) B) -> (int8(M,N) C)
 {
   C(m,n) += A(k,l,m) * B(l,k,n) where m in 0:M, k in 0:K, n in 0:N, l in 0:L
 }

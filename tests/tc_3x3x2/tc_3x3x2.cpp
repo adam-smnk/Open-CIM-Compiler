@@ -7,6 +7,8 @@
 #include <cstdint>
 #include <iostream>
 
+#define CIM_PRECISION int8_t
+
 // Example based on Python NumPy tensordot docs:
 // https://numpy.org/doc/stable/reference/generated/numpy.tensordot.html
 
@@ -16,9 +18,9 @@ static const size_t rankC = 2;
 
 // Functions generated from TC
 extern "C" {
-void _mlir_ciface_tc3x3x2(memref::MemRefDescriptor<int32_t, rankA> *A,
-                          memref::MemRefDescriptor<int32_t, rankB> *B,
-                          memref::MemRefDescriptor<int32_t, rankC> *C);
+void _mlir_ciface_tc3x3x2(memref::MemRefDescriptor<CIM_PRECISION, rankA> *A,
+                          memref::MemRefDescriptor<CIM_PRECISION, rankB> *B,
+                          memref::MemRefDescriptor<CIM_PRECISION, rankC> *C);
 }
 
 int main() {
@@ -29,25 +31,25 @@ int main() {
   const int32_t K = 3;
   const int32_t L = 4;
 
-  int32_t matA[K * L * M];
+  CIM_PRECISION matA[K * L * M];
   for (int i = 0; i < K * L * M; ++i) {
     matA[i] = i;
   }
 
-  int32_t matB[L * K * N];
+  CIM_PRECISION matB[L * K * N];
   for (int i = 0; i < L * K * N; ++i) {
     matB[i] = i;
   }
 
-  int32_t matC[M * N] = {0};
+  CIM_PRECISION matC[M * N] = {0};
 
   std::array<int64_t, rankA> aDim = {K, L, M};
   std::array<int64_t, rankB> bDim = {L, K, N};
   std::array<int64_t, rankC> cDim = {M, N};
 
-  memref::MemRef<int32_t, rankA> A((int32_t *)matA, aDim);
-  memref::MemRef<int32_t, rankB> B((int32_t *)matB, bDim);
-  memref::MemRef<int32_t, rankC> C((int32_t *)matC, cDim);
+  memref::MemRef<CIM_PRECISION, rankA> A((CIM_PRECISION *)matA, aDim);
+  memref::MemRef<CIM_PRECISION, rankB> B((CIM_PRECISION *)matB, bDim);
+  memref::MemRef<CIM_PRECISION, rankC> C((CIM_PRECISION *)matC, cDim);
 
   std::cout << "A Matrix:\n";
   utility::printTensor(A);
@@ -61,10 +63,10 @@ int main() {
   utility::printTensor(C);
 
   // Compute TTGT manually
-  int32_t flatA[M][K * L] = {};
-  int32_t flatB[K * L][N] = {};
-  int32_t flatC[M][N] = {};
-  int32_t outputC[M * N] = {0};
+  CIM_PRECISION flatA[M][K * L] = {};
+  CIM_PRECISION flatB[K * L][N] = {};
+  CIM_PRECISION flatC[M][N] = {};
+  CIM_PRECISION outputC[M * N] = {0};
 
   // Transpose (flatten) A
   for (int k = 0; k < K; ++k) {
@@ -103,7 +105,7 @@ int main() {
       outputC[m * N + n] = flatC[m][n];
     }
   }
-  memref::MemRef<int32_t, rankC> manualC((int32_t *)outputC, cDim);
+  memref::MemRef<CIM_PRECISION, rankC> manualC((CIM_PRECISION *)outputC, cDim);
 
   std::cout << "Manual contraction result:\n";
   utility::printTensor(manualC);
