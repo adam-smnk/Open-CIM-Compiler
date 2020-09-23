@@ -13,6 +13,16 @@ set(CIM_TILE_SIZE 0)
 set(CIM_MIN_WRITES 0)
 
 #################################################
+# Benchmark app settings
+#################################################
+# Base dimension size used in creation of tensors
+# e.g. matrix [DIM_SIZE * DIM_SIZE]
+add_definitions(-DDIM_SIZE=8)
+
+# Enable benchmark build
+set(BUILD_BENCHMARKS 0)
+
+#################################################
 # Architecture Settings
 #################################################
 set(CMAKE_SYSTEM_NAME Generic)
@@ -117,5 +127,6 @@ include(${CMAKE_SOURCE_DIR}/utils/cmake/file_generation.cmake)
 #################################################
 # Subdirectories
 #################################################
+add_subdirectory(benchmarks)
 add_subdirectory(lib)
 add_subdirectory(tests)

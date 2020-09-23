@@ -1,0 +1,4 @@
+def kernel1mm(int8(M,K) A, int8(K,N) B) -> (int8(M,N) C)
+{
+  C(i,j) += A(i,k) * B(k,j) where i in 0:M, k in 0:K, j in 0:N
+}
