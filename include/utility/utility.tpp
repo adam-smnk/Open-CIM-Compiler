@@ -63,6 +63,17 @@ void printVector(const memref::MemRefDescriptor<T, 1> &vec) {
   printf("|\n");
 }
 
+template <typename T, size_t rank>
+int tensorSize(const std::array<T, rank> &sizes) {
+  int total = 1;
+
+  for (int size : sizes) {
+    total *= size;
+  }
+
+  return total;
+}
+
 template <typename T>
 void computeGemm(const memref::MemRef<T, 2> &A, const memref::MemRef<T, 2> &B,
                  const memref::MemRef<T, 2> &C) {
