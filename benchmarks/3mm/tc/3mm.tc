@@ -1,0 +1,7 @@
+def kernel3mm(int8(M,K) A, int8(K,N) B, int8(N,Q) C, int8(Q,P) D)
+              -> (int8(M,N) E, int8(N,P) F, int8(M,P) G)
+{
+  E(m,n) += A(m,k) * B(k,n) where m in 0:M, k in 0:K, n in 0:N
+  F(n,p) += C(n,q) * D(q,p) where n in 0:N, q in 0:Q, p in 0:P
+  G(m,p) += E(m,n) * F(n,p) where m in 0:M, n in 0:N, p in 0:P
+}
