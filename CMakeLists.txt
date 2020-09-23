@@ -53,7 +53,7 @@ set(OBJ_GEN_EXTENSION ".o")
 
 # CIM compilation flags
 set(MLIR_CIM_FLAGS "--convert-linalg-to-cim --cim-num-tiles=${CIM_NUM_TILES} --cim-tile-size=${CIM_TILE_SIZE} --cim-min-writes=${CIM_MIN_WRITES} --convert-cim-to-std")
-set(MLIR_CONV_FLAGS "--convert-linalg-to-parallel-loops --convert-loop-to-std --convert-std-to-llvm=\'emit-c-wrappers=1\'")
+set(MLIR_CONV_FLAGS "--convert-linalg-to-loops --convert-loop-to-std --convert-std-to-llvm=\'emit-c-wrappers=1\'")
 set(MLIR_EXTRA_FLAGS "--expensive-combines --loop-coalescing")
 set(MLIR_COMMON_FLAGS "--canonicalize --cse --symbol-dce")
 
