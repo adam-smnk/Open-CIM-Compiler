@@ -1,0 +1,4 @@
+def conv2d(int32(B,IP,H,W) input, int32(OP,IP,KH,KW) weight) -> (int32(B,OP,H,W) out)
+{
+  out(b,op,h,w) += input(b,ip, h + kh, w + kw) * weight(op,ip,kh,kw) where b in 0:B, ip in 0:IP, h in 0:H, kh in 0:KH, w in 0:W, kw in 0:KW, op in 0:OP
+}

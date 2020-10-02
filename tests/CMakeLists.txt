@@ -1,3 +1,4 @@
+add_subdirectory(conv2d)
 add_subdirectory(kronecker3)
 add_subdirectory(mlp1)
 add_subdirectory(mlp3)
