@@ -1,0 +1,4 @@
+def conv1d(int32(B,IP,H) input, int32(OP,IP,KH) weight) -> (int32(B,OP,H) out)
+{
+  out(b,op,h) += input(b,ip, h + kh) * weight(op,ip,kh) where b in 0:B, ip in 0:IP, h in 0:H, kh in 0:KH, op in 0:OP
+}
