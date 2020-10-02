@@ -9,6 +9,12 @@ template <typename T, size_t rank>
 void printTensor(const memref::MemRef<T, rank> &memRef);
 
 template <typename T>
+void printMatrix3D(const memref::MemRef<T, 3> &memRef);
+
+template <typename T>
+void printMatrix3D(const memref::MemRefDescriptor<T, 3> &mat);
+
+template <typename T>
 void printMatrix(const memref::MemRef<T, 2> &memRef);
 
 template <typename T>
