@@ -44,6 +44,8 @@ function(bench_arm
     ${CPP_FILES}
     ${OBJ_FILES}
   )
+
+  target_compile_definitions(bench-${TARGET}-arm PUBLIC -DBENCH_BUILD_ARM)
 endfunction()
 
 # Run on CIM without any additional optimizations
