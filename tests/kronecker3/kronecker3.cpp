@@ -20,17 +20,23 @@ void _mlir_ciface_kronecker3(memref::MemRefDescriptor<int32_t, 2> *W0,
 
 int main() {
   const int32_t D0 = 2;
-  const int32_t N0 = 3;
-  const int32_t D1 = 4;
+  const int32_t N0 = 1;
+  const int32_t D1 = 2;
   const int32_t N1 = 2;
-  const int32_t D2 = 3;
-  const int32_t N2 = 4;
-  const int32_t M = 3;
+  const int32_t D2 = 2;
+  const int32_t N2 = 2;
+  const int32_t M = 1;
 
   // Input
-  int32_t bufX[M * N0 * N1 * N2];
+  int32_t bufX[M][N0][N1][N2];
   for (int i = 0; i < M * N0 * N1 * N2; ++i) {
-    bufX[i] = i;
+    ((int32_t *)bufX)[i] = i;
+  }
+  for (int i = 0; i < N1; i++) {
+    for (int j = 0; j < N2; j++) {
+      std::cout << bufX[0][0][i][j] << " ";
+    }
+    std::cout << "\n";
   }
 
   // Weights
@@ -48,9 +54,9 @@ int main() {
   }
 
   // Outputs
-  int32_t bufY[M * D0 * D1 * D2] = {0};
-  int32_t bufXW1[M * N0 * D1 * D2] = {0};
-  int32_t bufXW2[M * N0 * N1 * D2] = {0};
+  int32_t bufY[M][D0][D1][D2] = {0};
+  int32_t bufXW1[M][N0][D1][D2] = {0};
+  int32_t bufXW2[M][N0][N1][D2] = {0};
 
   memref::MemRef<int32_t, 2> W0((int32_t *)bufW0, {D0, N0});
   memref::MemRef<int32_t, 2> W1((int32_t *)bufW1, {D1, N1});
@@ -78,8 +84,32 @@ int main() {
   std::cout << "### Kronecker3 results ###\n";
   std::cout << "Y:\n";
   utility::printTensor(Y);
+  for (int i = 0; i < D1; i++) {
+    for (int j = 0; j < D2; j++) {
+      std::cout << bufY[0][0][i][j] << " ";
+    }
+    std::cout << "\n";
+  }
+  for (int i = 0; i < D1; i++) {
+    for (int j = 0; j < D2; j++) {
+      std::cout << bufY[0][1][i][j] << " ";
+    }
+    std::cout << "\n";
+  }
   std::cout << "XW1:\n";
   utility::printTensor(XW1);
+  for (int i = 0; i < N1; i++) {
+    for (int j = 0; j < N2; j++) {
+      std::cout << bufXW1[0][0][i][j] << " ";
+    }
+    std::cout << "\n";
+  }
   std::cout << "XW2:\n";
   utility::printTensor(XW2);
+  for (int i = 0; i < N1; i++) {
+    for (int j = 0; j < N2; j++) {
+      std::cout << bufXW2[0][0][i][j] << " ";
+    }
+    std::cout << "\n";
+  }
 }
