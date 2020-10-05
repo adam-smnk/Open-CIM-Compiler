@@ -1,0 +1,4 @@
+def conv3d(int8(B,IP,H,W,D) input, int8(OP,IP,KH,KW,KD) weight) -> (int8(B,OP,H,W,D) out)
+{
+  out(b,op,h,w,d) += input(b,ip, h + kh, w + kw, d + kd) * weight(op,ip,kh,kw,kd) where b in 0:B, ip in 0:IP, h in 0:H, kh in 0:KH, w in 0:W, kw in 0:KW, d in 0:D, kd in 0:KD, op in 0:OP
+}
