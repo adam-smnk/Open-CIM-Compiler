@@ -19,6 +19,9 @@ set(CIM_MIN_WRITES 0)
 # e.g. matrix [DIM_SIZE * DIM_SIZE]
 add_definitions(-DDIM_SIZE=8)
 
+# Kernel size used in convolution
+add_definitions(-DKERNEL_SIZE=3)
+
 # Enable benchmark build
 set(BUILD_BENCHMARKS 0)
 
