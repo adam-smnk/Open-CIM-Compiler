@@ -22,6 +22,9 @@ add_definitions(-DDIM_SIZE=8)
 # Kernel size used in convolution
 add_definitions(-DKERNEL_SIZE=3)
 
+# Enable benchmarks debug prints
+# add_definitions(-DBENCH_PRINT)
+
 # Enable benchmark build
 set(BUILD_BENCHMARKS 0)
 

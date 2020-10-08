@@ -85,6 +85,7 @@ int main() {
                                            {N, K, H, W, D});
 
   std::cout << "A input:\n";
+#ifdef BENCH_PRINT
   for (int n = 0; n < N; ++n) {
     for (int c = 0; c < C; ++c) {
       printf("N: %d C: %d", n, c);
@@ -93,8 +94,12 @@ int main() {
       utility::printMatrix3D(mat);
     }
   }
+#else
+  utility::printTensor(A);
+#endif // BENCH_PRINT
 
   std::cout << "B input:\n";
+#ifdef BENCH_PRINT
   for (int k = 0; k < K; ++k) {
     for (int c = 0; c < C; ++c) {
       printf("K: %d C: %d", k, c);
@@ -103,6 +108,9 @@ int main() {
       utility::printMatrix3D(mat);
     }
   }
+#else
+  utility::printTensor(B);
+#endif // BENCH_PRINT
 
   simulator_mark_start();
 #ifdef BENCH_BUILD_ARM
@@ -136,15 +144,19 @@ int main() {
 #endif // BENCH_ARM_BUILD
   simulator_mark_end();
 
+#ifdef BENCH_PRINT
   std::cout << "C output:\n";
   for (int n = 0; n < N; ++n) {
     for (int k = 0; k < K; ++k) {
       printf("N: %d K: %d", n, k);
       memref::MemRef<CIM_PRECISION, 3> mat((CIM_PRECISION *)matC[n][k],
-                                           {H, W, D});
+                                           {H, W, 1});
       utility::printMatrix3D(mat);
     }
   }
+#else
+  utility::printTensor(memC);
+#endif // BENCH_PRINT
 
   delete[] matA;
   delete[] matB;

@@ -95,6 +95,7 @@ int main() {
   std::cout << "Input:\n";
   utility::printTensor(X);
 
+#ifdef BENCH_PRINT
   std::cout << "Weights:\n";
   std::cout << "W0:\n";
   utility::printTensor(W0);
@@ -102,6 +103,7 @@ int main() {
   utility::printTensor(W1);
   std::cout << "W2:\n";
   utility::printTensor(W2);
+#endif // BENCH_PRINT
 
   simulator_mark_start();
   _mlir_ciface_kronecker3(&W0.memRefDesc, &W1.memRefDesc, &W2.memRefDesc,
