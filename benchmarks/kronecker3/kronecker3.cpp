@@ -51,35 +51,35 @@ int main() {
   const int xw2Size = utility::tensorSize<>(xw2Dim);
 
   // Input
-  CIM_PRECISION bufX[xSize];
+  auto bufX = new CIM_PRECISION[xSize];
   for (int i = 0; i < xSize; ++i) {
     bufX[i] = i;
   }
 
   // Weights
-  CIM_PRECISION bufW0[w0Size];
+  auto bufW0 = new CIM_PRECISION[w0Size];
   for (int i = 0; i < w0Size; ++i) {
     bufW0[i] = i;
   }
-  CIM_PRECISION bufW1[w1Size];
+  auto bufW1 = new CIM_PRECISION[w1Size];
   for (int i = 0; i < w1Size; ++i) {
     bufW1[i] = i;
   }
-  CIM_PRECISION bufW2[w2Size];
+  auto bufW2 = new CIM_PRECISION[w2Size];
   for (int i = 0; i < w2Size; ++i) {
     bufW2[i] = i;
   }
 
   // Outputs
-  CIM_PRECISION bufY[ySize];
+  auto bufY = new CIM_PRECISION[ySize];
   for (int i = 0; i < ySize; ++i) {
     bufY[i] = 0;
   }
-  CIM_PRECISION bufXW1[xw1Size];
+  auto bufXW1 = new CIM_PRECISION[xw1Size];
   for (int i = 0; i < xw1Size; ++i) {
     bufXW1[i] = 0;
   }
-  CIM_PRECISION bufXW2[xw2Size];
+  auto bufXW2 = new CIM_PRECISION[xw2Size];
   for (int i = 0; i < xw2Size; ++i) {
     bufXW2[i] = 0;
   }
@@ -116,6 +116,14 @@ int main() {
   utility::printTensor(XW1);
   std::cout << "XW2:\n";
   utility::printTensor(XW2);
+
+  delete[] bufW0;
+  delete[] bufW1;
+  delete[] bufW2;
+  delete[] bufX;
+  delete[] bufY;
+  delete[] bufXW1;
+  delete[] bufXW2;
 
   simulator_terminate();
 }

@@ -39,7 +39,7 @@ int main() {
   const int32_t KW = KERNEL_SIZE;
   const int32_t KD = KERNEL_SIZE;
 
-  CIM_PRECISION matA[N][C][H][W][D];
+  auto matA = new CIM_PRECISION[N][C][H][W][D];
   for (int n = 0; n < N; ++n) {
     for (int c = 0; c < C; ++c) {
       for (int h = 0; h < H; ++h) {
@@ -52,7 +52,7 @@ int main() {
     }
   }
 
-  CIM_PRECISION matB[K][C][KH][KW][KD];
+  auto matB = new CIM_PRECISION[K][C][KH][KW][KD];
   for (int k = 0; k < K; ++k) {
     for (int c = 0; c < C; ++c) {
       for (int kh = 0; kh < KH; ++kh) {
@@ -65,7 +65,7 @@ int main() {
     }
   }
 
-  CIM_PRECISION matC[N][K][H][W][D];
+  auto matC = new CIM_PRECISION[N][K][H][W][D];
   for (int n = 0; n < N; ++n) {
     for (int k = 0; k < K; ++k) {
       for (int h = 0; h < H; ++h) {
@@ -85,18 +85,32 @@ int main() {
                                            {N, K, H, W, D});
 
   std::cout << "A input:\n";
-  utility::printTensor(A);
+  for (int n = 0; n < N; ++n) {
+    for (int c = 0; c < C; ++c) {
+      printf("N: %d C: %d", n, c);
+      memref::MemRef<CIM_PRECISION, 3> mat((CIM_PRECISION *)matA[n][c],
+                                           {H, W, D});
+      utility::printMatrix3D(mat);
+    }
+  }
 
   std::cout << "B input:\n";
-  utility::printTensor(B);
+  for (int k = 0; k < K; ++k) {
+    for (int c = 0; c < C; ++c) {
+      printf("K: %d C: %d", k, c);
+      memref::MemRef<CIM_PRECISION, 3> mat((CIM_PRECISION *)matB[k][c],
+                                           {KH, KW, KD});
+      utility::printMatrix3D(mat);
+    }
+  }
 
   simulator_mark_start();
 #ifdef BENCH_BUILD_ARM
   const int paddingRows = KH - 1;
   const int paddingCols = KW - 1;
   const int paddingDepth = KD - 1;
-  CIM_PRECISION matPaddedA[N][K][H + paddingRows][W + paddingCols]
-                          [D + paddingDepth] = {0};
+  auto matPaddedA = new CIM_PRECISION[N][K][H + paddingRows][W + paddingCols]
+                                     [D + paddingDepth]();
   for (int n = 0; n < N; ++n) {
     for (int k = 0; k < K; ++k) {
       for (int h = 0; h < H; ++h) {
@@ -115,13 +129,26 @@ int main() {
       (CIM_PRECISION *)matPaddedA,
       {N, C, H + paddingRows, W + paddingCols, D + paddingDepth});
   _mlir_ciface_conv3d(&paddedA.memRefDesc, &B.memRefDesc, &memC.memRefDesc);
+
+  delete[] matPaddedA;
 #else
   _mlir_ciface_conv3d(&A.memRefDesc, &B.memRefDesc, &memC.memRefDesc);
 #endif // BENCH_ARM_BUILD
   simulator_mark_end();
 
   std::cout << "C output:\n";
-  utility::printTensor(memC);
+  for (int n = 0; n < N; ++n) {
+    for (int k = 0; k < K; ++k) {
+      printf("N: %d K: %d", n, k);
+      memref::MemRef<CIM_PRECISION, 3> mat((CIM_PRECISION *)matC[n][k],
+                                           {H, W, D});
+      utility::printMatrix3D(mat);
+    }
+  }
+
+  delete[] matA;
+  delete[] matB;
+  delete[] matC;
 
   simulator_terminate();
 }
