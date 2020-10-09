@@ -1,0 +1,4 @@
+def mv(int8(N,K) A, int8(K) B) -> (int8(N) C)
+{
+  C(n) += A(n, k) * B(k) where k in 0:K, n in 0:N
+}
