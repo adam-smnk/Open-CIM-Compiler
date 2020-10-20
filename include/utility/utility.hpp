@@ -27,6 +27,9 @@ template <typename T>
 void printVector(const memref::MemRefDescriptor<T, 1> &vec);
 
 template <typename T, size_t rank>
+void printDimensions(const memref::MemRef<T, rank> &memRef);
+
+template <typename T, size_t rank>
 int tensorSize(const std::array<T, rank> &sizes);
 
 template <typename T>

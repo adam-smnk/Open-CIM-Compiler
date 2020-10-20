@@ -11,11 +11,7 @@ namespace utility {
 template <typename T, size_t rank>
 void printTensor(const memref::MemRef<T, rank> &memRef) {
   printf("Cannot print - unsupported tensor rank\n");
-  printf("Tensor dims: ");
-  for (int32_t dim : memRef.memRefDesc.sizes) {
-    printf("%d ", dim);
-  }
-  printf("\n");
+  printDimensions(memRef);
 }
 
 template <typename T>
@@ -100,6 +96,15 @@ int tensorSize(const std::array<T, rank> &sizes) {
   }
 
   return total;
+}
+
+template <typename T, size_t rank>
+void printDimensions(const memref::MemRef<T, rank> &memRef) {
+  printf("Tensor dims: ");
+  for (int32_t dim : memRef.memRefDesc.sizes) {
+    printf("%d ", dim);
+  }
+  printf("\n");
 }
 
 template <typename T>
