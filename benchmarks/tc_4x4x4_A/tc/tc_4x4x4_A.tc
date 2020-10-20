@@ -1,0 +1,4 @@
+def tc4x4x4(int8(A,E,B,F) tensorA, int8(D,F,C,E) tensorB) -> (int8(A,B,C,D) tensorC)
+{
+  tensorC(a,b,c,d) += tensorA(a,e,b,f) * tensorB(d,f,c,e) where a in 0:A, b in 0:B, c in 0:C, d in 0:D, e in 0:E, f in 0:F
+}

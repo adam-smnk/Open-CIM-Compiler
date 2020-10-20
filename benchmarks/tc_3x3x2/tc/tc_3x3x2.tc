@@ -1,0 +1,4 @@
+def tc3x3x2(int8(A,C,D) tensorA, int8(D,B) tensorB) -> (int8(A,B,C) tensorC)
+{
+  tensorC(a,b,c) += tensorA(a,c,d) * tensorB(d,b) where a in 0:A, b in 0:B, c in 0:C, d in 0:D
+}
