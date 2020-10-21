@@ -60,7 +60,7 @@ int main() {
 
   std::cout << "A Tensor:\n";
 #ifdef BENCH_PRINT
-  utility::printMatrix3D(memA);
+  utility::printTensor(memA);
 #else
   utility::printDimensions(memA);
 #endif // BENCH_PRINT
@@ -78,7 +78,7 @@ int main() {
 
   std::cout << "C Tensor:\n";
 #ifdef BENCH_PRINT
-  utility::printMatrix3D(memC);
+  utility::printTensor(memC);
 #else
   utility::printDimensions(memC);
 #endif // BENCH_PRINT
