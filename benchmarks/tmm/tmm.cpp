@@ -13,9 +13,6 @@
 #define DIM_SIZE 3
 #endif // DIM_SIZE
 
-// Example based on Python NumPy tensordot docs:
-// https://numpy.org/doc/stable/reference/generated/numpy.tensordot.html
-
 static const size_t rankA = 2;
 static const size_t rankB = 2;
 static const size_t rankC = 2;
