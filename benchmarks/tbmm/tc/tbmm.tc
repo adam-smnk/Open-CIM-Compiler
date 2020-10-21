@@ -1,0 +1,4 @@
+def tbmm(int8(B,N,M) X, int8(B,K,M) Y) -> (int8(B,N,K) Z)
+{
+  Z(b,n,k) +=! X(b,n,m) * Y(b,k,m) where b in 0:B, m in 0:M, k in 0:K, n in 0:N
+}

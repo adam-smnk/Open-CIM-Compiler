@@ -1,0 +1,5 @@
+def group_convolution(int8(N,G,C,H,W) I, int8(G,F,C,KH,KW) W1, int8(M) B) -> (int8(N,G,F,H,W) O)
+{
+  O(n,g,f,h,w) += B(m) where n in 0:N, g in 0:G, f in 0:F, h in 0:H, w in 0:W, m in 0:M
+  O(n,g,f,h,w) += I(n,g,c, h + kh, w + kw) * W1(g,f,c,kh,kw) where n in 0:N, g in 0:G, f in 0:F, h in 0:H, w in 0:W, m in 0:M, kh in 0:KH, kw in 0:KW, c in 0:C
+}

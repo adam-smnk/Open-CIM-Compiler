@@ -1,0 +1,8 @@
+def moments2_2d_1D(int8(N,K) I) -> (int8(N) mean, int8(N) var)
+{
+  # var = E(x^2) - mean^2
+  mean(n) +=! I(n,k) where n in 0:N, k in 0:K
+  var(n) +=! I(n,k) * I(n,k) where n in 0:N, k in 0:K
+  mean(n) = mean(n) / int8(K) where n in 0:N
+  var(n) = var(n) / int8(K) - mean(n) * mean(n) where n in 0:N
+}
