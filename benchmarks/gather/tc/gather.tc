@@ -1,0 +1,4 @@
+def gather(int8(N) X, int8(A,B) I) -> (int8(A,B) Z)
+{
+  Z(i,j) = X(index(I(i,j))) where i in 0:A, j in 0:B
+}
