@@ -5,12 +5,24 @@ function(compile_benchmark
     TARGET
     CPP_FILES
     OBJ_FILES
+    MLIR_FILES
   )
+
+  add_custom_target(${TARGET}-mlir-gen
+    DEPENDS ${MLIR_FILES}
+  )
+
+  add_custom_target(${TARGET}-generator
+    DEPENDS ${OBJ_FILES}
+  )
+  add_dependencies(${TARGET}-generator ${TARGET}-mlir-gen)
+
   add_executable(bench-${TARGET}
     ${CPP_FILES}
     ${OBJ_FILES}
     ${SIM_OBJ}
   )
+  add_dependencies(bench-${TARGET} ${TARGET}-generator)
 
   target_link_libraries(bench-${TARGET}
     mlirInterface
@@ -43,6 +55,7 @@ function(bench_arm
   compile_benchmark(${TARGET}-arm
     ${CPP_FILES}
     ${OBJ_FILES}
+    ${MLIR_FILES}
   )
 
   target_compile_definitions(bench-${TARGET}-arm PUBLIC -DBENCH_BUILD_ARM)
@@ -73,6 +86,7 @@ function(bench_cim
   compile_benchmark(${TARGET}-cim
     ${CPP_FILES}
     ${OBJ_FILES}
+    ${MLIR_FILES}
   )
 endfunction()
 
@@ -100,6 +114,7 @@ function(bench_cim_tiled
   compile_benchmark(${TARGET}-cim-tiled
     ${CPP_FILES}
     ${OBJ_FILES}
+    ${MLIR_FILES}
   )
 endfunction()
 
@@ -127,6 +142,7 @@ function(bench_cim_min_writes
   compile_benchmark(${TARGET}-cim-min-writes
     ${CPP_FILES}
     ${OBJ_FILES}
+    ${MLIR_FILES}
   )
 endfunction()
 
@@ -154,6 +170,7 @@ function(bench_cim_unroll
   compile_benchmark(${TARGET}-cim-unroll
     ${CPP_FILES}
     ${OBJ_FILES}
+    ${MLIR_FILES}
   )
 endfunction()
 
@@ -181,6 +198,7 @@ function(bench_cim_opt
   compile_benchmark(${TARGET}-cim-opt
     ${CPP_FILES}
     ${OBJ_FILES}
+    ${MLIR_FILES}
   )
 endfunction()
 
