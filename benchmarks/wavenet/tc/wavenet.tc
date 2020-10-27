@@ -1,0 +1,43 @@
+def wavenet1(int8(B, RESIDUAL_C, RECEPTIVE_FIELD) Data,
+             int8(DILATION_C, RESIDUAL_C, 2) FilterWeight, int8(DILATION_C) FilterBias,
+             int8(DILATION_C, RESIDUAL_C, 2) GateWeight, int8(DILATION_C) GateBias,
+             int8(RESIDUAL_C, DILATION_C) ResWeight, int8(RESIDUAL_C) ResBias,
+             int8(SKIP_C, DILATION_C) SkipWeight, int8(SKIP_C) SkipBias,
+             int8(DILATION_FACTOR) Dilation)
+    -> (int8(B, DILATION_C, RECEPTIVE_FIELD) FilterOut, int8(B, DILATION_C, RECEPTIVE_FIELD) GateOut,
+        int8(B, DILATION_C, RECEPTIVE_FIELD) NonLin, int8(B, RESIDUAL_C, RECEPTIVE_FIELD) Res,
+        int8(B, SKIP_C, RECEPTIVE_FIELD) Skip)
+{
+  FilterOut(b, dilation_c, rf) = FilterBias(dilation_c)
+    where b in 0:B, dilation_c in 0:DILATION_C, rf in 0:RECEPTIVE_FIELD
+  FilterOut(b, dilation_c, rf) += Data(b, r_residual_c, rf) * FilterWeight(dilation_c, r_residual_c, index(1))
+    where b in 0:B, dilation_c in 0:DILATION_C, rf in 0:DILATION_FACTOR, r_residual_c in 0:RESIDUAL_C
+  FilterOut(b, dilation_c, rf) += Data(b, r_residual_c, rf) * FilterWeight(dilation_c, r_residual_c, index(1))
+      + Data(b, r_residual_c, rf - DILATION_FACTOR) * FilterWeight(dilation_c, r_residual_c, index(0))
+    where b in 0:B, dilation_c in 0:DILATION_C, rf in DILATION_FACTOR:RECEPTIVE_FIELD, r_residual_c in 0:RESIDUAL_C
+
+  GateOut(b, dilation_c, rf) = GateBias(dilation_c)
+    where b in 0:B, dilation_c in 0:DILATION_C, rf in 0:RECEPTIVE_FIELD
+  GateOut(b, dilation_c, rf) += Data(b, r_residual_c, rf) * GateWeight(dilation_c, r_residual_c, index(1))
+    where b in 0:B, dilation_c in 0:DILATION_C, rf in 0:DILATION_FACTOR, r_residual_c in 0:RESIDUAL_C
+  GateOut(b, dilation_c, rf) += Data(b, r_residual_c, rf) * GateWeight(dilation_c, r_residual_c, index(1))
+      + Data(b, r_residual_c, rf - DILATION_FACTOR) * GateWeight(dilation_c, r_residual_c, index(0))
+    where b in 0:B, dilation_c in 0:DILATION_C, rf in DILATION_FACTOR:RECEPTIVE_FIELD, r_residual_c in 0:RESIDUAL_C
+
+  # apply tanh
+  NonLin(b, dilation_c, rf) = min(max(FilterOut(b, dilation_c, rf), int8(0 - 1)), 1i8)
+    where b in 0:B, dilation_c in 0:DILATION_C, rf in 0:RECEPTIVE_FIELD
+  # apply sigmoid
+  NonLin(b, dilation_c, rf) *= min(max(GateOut(b, dilation_c, rf), 0i8), 1i8)
+    where b in 0:B, dilation_c in 0:DILATION_C, rf in 0:RECEPTIVE_FIELD
+
+  Res(b, residual_c, rf) = Data(b, residual_c, rf) + ResBias(residual_c)
+    where b in 0:B, residual_c in 0:RESIDUAL_C, rf in 0:RECEPTIVE_FIELD
+  Res(b, residual_c, rf) += NonLin(b, r_dilation_c, rf) * ResWeight(residual_c, r_dilation_c)
+    where b in 0:B, residual_c in 0:RESIDUAL_C, rf in 0:RECEPTIVE_FIELD, r_dilation_c in 0:DILATION_C
+
+  Skip(b, skip, rf) +=! NonLin(b, r_dilation_c, rf) * SkipWeight(skip, r_dilation_c)
+    where b in 0:B, skip in 0:SKIP_C, rf in 0:RECEPTIVE_FIELD, r_dilation_c in 0:DILATION_C
+  Skip(b, skip, rf) = Skip(b, skip, rf) + SkipBias(skip)
+    where b in 0:B, skip in 0:SKIP_C, rf in 0:RECEPTIVE_FIELD
+}
