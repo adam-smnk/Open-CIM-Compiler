@@ -9,6 +9,32 @@
 namespace utility {
 
 template <typename T, size_t rank>
+memref::MemRef<T, rank>
+allocateMemRef(const std::array<int64_t, rank> dimSizes) {
+  const int bufferSize = utility::tensorSize<>(dimSizes);
+
+  auto buffer = new T[bufferSize];
+  for (int i = 0; i < bufferSize; ++i) {
+    buffer[i] = i;
+  }
+
+  return memref::MemRef<T, rank>((T *)buffer, dimSizes);
+}
+
+template <typename T, size_t rank>
+memref::MemRef<T, rank> allocateMemRef(const std::array<int64_t, rank> dimSizes,
+                                       T defaultDataVal) {
+  const int bufferSize = utility::tensorSize<>(dimSizes);
+
+  auto buffer = new T[bufferSize];
+  for (int i = 0; i < bufferSize; ++i) {
+    buffer[i] = defaultDataVal;
+  }
+
+  return memref::MemRef<T, rank>((T *)buffer, dimSizes);
+}
+
+template <typename T, size_t rank>
 void printTensor(const memref::MemRef<T, rank> &memRef) {
   printf("Cannot print - unsupported tensor rank\n");
   printDimensions(memRef);

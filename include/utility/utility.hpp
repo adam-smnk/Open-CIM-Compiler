@@ -6,6 +6,14 @@
 namespace utility {
 
 template <typename T, size_t rank>
+memref::MemRef<T, rank>
+allocateMemRef(const std::array<int64_t, rank> dimSizes);
+
+template <typename T, size_t rank>
+memref::MemRef<T, rank> allocateMemRef(const std::array<int64_t, rank> dimSizes,
+                                       T defaultDataVal);
+
+template <typename T, size_t rank>
 void printTensor(const memref::MemRef<T, rank> &memRef);
 
 template <typename T>
