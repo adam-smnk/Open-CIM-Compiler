@@ -9,7 +9,7 @@
 #define CIM_PRECISION int8_t
 
 #ifndef DIM_SIZE
-#define DIM_SIZE 3
+#define DIM_SIZE 8
 #endif // DIM_SIZE
 
 // Functions generated from TC
