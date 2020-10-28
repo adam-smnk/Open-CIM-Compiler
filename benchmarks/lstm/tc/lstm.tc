@@ -1,0 +1,23 @@
+def lstm(int8(H) CTprev, int8(EH) XH, int8(EH,H4) Weights)
+    -> (int8(H4) States, int8(H) CT, int8(H) HT)
+{
+  # Inputs:  [c(t-1)], [x(t) h(t-1)]
+  # Weights: | Wf Wi Wo Wc |
+  #          | Uf Ui Uo Uc |
+  # States:  [f'(t) i'(t) o'(t) c'(t)]
+  # Outputs: [c(t)], [h(t)]
+  # Sigmoid: min(max(val, 0), 1)
+  # Tanh:    min(max(val, 0 - 1), 1)
+
+  # [f' i' o' c'] = [x(t) h(t-1)] * Weights
+  States(h4) +=! XH(eh) * Weights(eh, h4) where h4 in 0:H4, eh in 0:EH
+
+  # c(t) = sigmoid(f'(t)) * c(t-1) + sigmoid(i'(t)) * tanh(c'(t))
+  CT(h) +=! min(max(States(h), 0i8), 1i8) * CTprev(h)
+      + min(max(States(H + h), 0i8), 1i8) * min(max(States(index(3)*H + h), int8(0 - 1)), 1i8)
+    where h in 0:H
+
+  # h(t) = sigmoid(o'(t)) * tanh(c(t))
+  HT(h) +=! min(max(States(index(2)*H + h), 0i8), 1i8) * min(max(CT(h), int8(0 - 1)), 1i8)
+    where h in 0:H
+}
