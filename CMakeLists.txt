@@ -26,7 +26,13 @@ add_definitions(-DKERNEL_SIZE=3)
 # add_definitions(-DBENCH_PRINT)
 
 # Enable benchmark build
-set(BUILD_BENCHMARKS 0)
+set(BUILD_BENCHMARKS 1)
+
+#################################################
+# Test app settings
+#################################################
+# Enable test build
+set(BUILD_TESTS 0)
 
 #################################################
 # Architecture Settings
