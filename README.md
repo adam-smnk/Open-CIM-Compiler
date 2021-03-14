@@ -1,7 +1,8 @@
 # OCC: The Open CIM Compiler
 
 This repository contains MLIR-based compilation infrastructure and a suite of tests for a Computing-In-Memory device simulator.
-This branch contains extra set of benchmarks that can be run on an ARM-based CIM simulator.
+
+This branch is preconfigured for an ARM-based CIM simulator and contains an extra set of benchmarks used for performance profiling.
 
 ## End-to-end CIM compilation tests
 
