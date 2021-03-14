@@ -1,6 +1,8 @@
-# GEMM-in-memory
+# OCC: The Open CIM Compiler
 
-End-to-end CIM compilation tests.
+This repository contains MLIR-based compilation infrastructure and a suite of tests for a Computing-In-Memory device simulator.
+
+## End-to-end CIM compilation tests
 
 The provided tests are based on the following steps:
 
