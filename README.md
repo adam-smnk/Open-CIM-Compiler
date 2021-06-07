@@ -2,7 +2,7 @@
 
 This repository contains MLIR-based compilation infrastructure and a suite of tests for a Computing-In-Memory device simulator.
 
-See the 'sim_build' branch for additional simulation benchmarks and cross-compilation build config.
+See the 'sim_build' branch for additional simulation benchmarks, cross-compilation build config and evaluation results.
 
 ## End-to-end CIM compilation tests
 
